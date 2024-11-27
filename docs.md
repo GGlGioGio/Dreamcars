@@ -1,5 +1,3 @@
-## To starts server type (`python app.py`) in console
-
 ## 1. Home Page (`/`)
 **URL (method):** `/` (GET)  
 **Description:**  
