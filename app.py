@@ -3,7 +3,6 @@ from flask import Flask, render_template, request, redirect, url_for, session
 app = Flask(__name__)
 app.secret_key = 'secret_key'
 
-# Примерный список автомобилей
 cars = [
     {"id": 1, "name": "Mercedes W140 S600 V12 armored", "price": "$76,000", "image": "MercedesW140.jpg", "description": "Luxury armored sedan."},
     {"id": 2, "name": "Mercedes-Benz G 63 AMG BRABUS 800", "price": "$600,000", "image": "MercedecG.jpg", "description": "Powerful SUV tuned by BRABUS."},
@@ -31,17 +30,14 @@ def add_to_wishlist(car_id):
         if 'wishlist' not in session:
             session['wishlist'] = []
 
-        # Проверка, если машина уже в вишлисте
         existing_car = next((item for item in session['wishlist'] if item['id'] == car_id), None)
         if existing_car:
-            # Если машина уже есть, увеличиваем количество
             existing_car['quantity'] += 1
         else:
-            # Если машины нет, добавляем её в список с полем quantity
-            car_copy = car.copy()  # Создаем копию машины
-            car_copy['quantity'] = 1  # Устанавливаем количество 1
-            session['wishlist'].append(car_copy)  # Добавляем машину в вишлист
-
+            car_copy = car.copy()
+            car_copy['quantity'] = 1
+            session['wishlist'].append(car_copy)
+            
         session.modified = True
     return redirect(url_for('wishlist'))
 
@@ -54,15 +50,12 @@ def remove_from_wishlist(car_id):
     if 'wishlist' in session:
         car = next((item for item in session['wishlist'] if item['id'] == car_id), None)
         if car:
-            # Проверяем наличие ключа 'quantity', если его нет — устанавливаем в 1
             if 'quantity' not in car:
                 car['quantity'] = 1
             
             if car['quantity'] > 1:
-                # Если количество больше 1, уменьшаем на 1
                 car['quantity'] -= 1
             else:
-                # Если количество 1, удаляем машину
                 session['wishlist'] = [item for item in session['wishlist'] if item['id'] != car_id]
             session.modified = True
     return redirect(url_for('wishlist'))
