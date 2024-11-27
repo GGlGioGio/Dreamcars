@@ -17,5 +17,14 @@
             </form>
         </div>
     </div>
-    
+</div>
+
+{% if car['3d_model'] %}
+<div class="car-3d-model">
+    <h3>3D Model View</h3>
+    <div class="sketchfab-embed-wrapper">
+        <iframe title="{{ car['name'] }}" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="{{ car['3d_model'] }}"></iframe>
+    </div>
+</div>
+{% endif %}
 {% endblock %}
