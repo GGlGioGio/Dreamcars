@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ car['name'] }} - Details{% endblock %}
+
+{% block content %}
+<div class="car-details">
+    <div class="car-image">
+        <img src="{{ url_for('static', filename=car['image']) }}" alt="{{ car['name'] }}">
+    </div>
+    <div class="car-info">
+        <h2>{{ car['name'] }}</h2>
+        <p class="car-price">{{ car['price'] }}</p>
+        <p><strong>Description:</strong> {{ car['description'] }}</p>
+        <div class="buttons">
+            <form action="{{ url_for('add_to_wishlist', car_id=car['id']) }}" method="POST">
+                <button type="submit" class="button">Add to Wishlist</button>
+            </form>
+        </div>
+    </div>
+    
+{% endblock %}
