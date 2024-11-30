@@ -1,1 +1,5 @@
 Flask
+pytest
+flasgger
+flask_sqlalchemy
+flake8
