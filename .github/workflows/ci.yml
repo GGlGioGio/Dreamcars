@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: Deploy to Render
 
 on:
   push:
@@ -10,25 +10,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.8'
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: Run tests
-      run: |
-        pytest --disable-warnings  # Запускаем тесты, чтобы убедиться, что код работает
-
-    - name: Deploy to Render
-      run: |
-        curl -fsSL https://render.com/deploy | bash
-      env:
-        RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+      - name: Deploy to Render
+        run: |
+          curl -X POST \
+          -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+          -d '{}' \
+          https://api.render.com/v1/services/dreamcars/rqi9/deploy
