@@ -6,10 +6,10 @@
 <div class="cars">
     {% for car in cars %}
     <div class="car-card">
-        <img src="{{ url_for('static', filename=car['image']) }}" alt="{{ car['name'] }}">
-        <h2>{{ car['name'] }}</h2>
-        <p class="car-price">{{ car['price'] }}</p>
-        <a href="{{ url_for('car_details', id=car['id']) }}">View Details</a>
+        <img src="{{ url_for('static', filename=car.image) }}" alt="{{ car.name }}">
+        <h2>{{ car.name }}</h2>
+        <p class="car-price">{{ car.price }}</p>
+        <a href="{{ url_for('car_details', id=car.id) }}">View Details</a>
     </div>    
     {% endfor %}
 </div>

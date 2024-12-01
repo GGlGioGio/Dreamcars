@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, send_from_directory
 from flasgger import Swagger
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.secret_key = 'secret_key'
+
 swagger = Swagger(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cars.db'
@@ -35,13 +36,39 @@ with app.app_context():
             db.session.add(car)
         db.session.commit()
 
+@app.route('/swagger.yaml')
+def swagger_yaml():
+    return send_from_directory('.', 'swagger.yaml')
+
 @app.route('/')
 def home():
+    """
+    Home Page
+    ---
+    responses:
+      200:
+        description: Returns the homepage with a list of cars.
+    """
     cars = Car.query.all()
     return render_template('home.html', cars=cars)
 
 @app.route('/car/<int:id>', methods=['GET'])
 def car_details(id):
+    """
+    Car Details
+    ---
+    parameters:
+      - name: id
+        in: path
+        type: integer
+        required: true
+        description: ID of the car
+    responses:
+      200:
+        description: Returns car details page
+      404:
+        description: Car not found
+    """
     car = Car.query.get(id)
     if car is None:
         return render_template('404.html')
@@ -49,6 +76,19 @@ def car_details(id):
 
 @app.route('/car/<int:car_id>/add_to_wishlist', methods=['POST'])
 def add_to_wishlist(car_id):
+    """
+    Add to Wishlist
+    ---
+    parameters:
+      - name: car_id
+        in: path
+        type: integer
+        required: true
+        description: ID of the car to add to the wishlist
+    responses:
+      200:
+        description: Redirects to the wishlist page
+    """
     car = Car.query.get(car_id)
     if car:
         if 'wishlist' not in session:
@@ -74,10 +114,30 @@ def add_to_wishlist(car_id):
 
 @app.route('/wishlist')
 def wishlist():
+    """
+    Wishlist
+    ---
+    responses:
+      200:
+        description: Returns the wishlist page
+    """
     return render_template('wishlist.html', wishlist=session.get('wishlist', []))
 
 @app.route('/wishlist/<int:car_id>/remove', methods=['POST'])
 def remove_from_wishlist(car_id):
+    """
+    Remove from Wishlist
+    ---
+    parameters:
+      - name: car_id
+        in: path
+        type: integer
+        required: true
+        description: ID of the car to remove from the wishlist
+    responses:
+      200:
+        description: Redirects to the wishlist page
+    """
     if 'wishlist' in session:
         car = next((item for item in session['wishlist'] if item['id'] == car_id), None)
         if car:

@@ -1,29 +1,29 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ car['name'] }} - Details{% endblock %}
+{% block title %}{{ car.name }} - Details{% endblock %}
 
 {% block content %}
 <div class="car-details">
     <div class="car-image">
-        <img src="{{ url_for('static', filename=car['image']) }}" alt="{{ car['name'] }}">
+        <img src="{{ url_for('static', filename=car.image) }}" alt="{{ car.name }}">
     </div>
     <div class="car-info">
-        <h2>{{ car['name'] }}</h2>
-        <p class="car-price">{{ car['price'] }}</p>
-        <p><strong>Description:</strong> {{ car['description'] }}</p>
+        <h2>{{ car.name }}</h2>
+        <p class="car-price">{{ car.price }}</p>
+        <p><strong>Description:</strong> {{ car.description }}</p>
         <div class="buttons">
-            <form action="{{ url_for('add_to_wishlist', car_id=car['id']) }}" method="POST">
+            <form action="{{ url_for('add_to_wishlist', car_id=car.id) }}" method="POST">
                 <button type="submit" class="button">Add to Wishlist</button>
             </form>
         </div>
     </div>
 </div>
 
-{% if car['3d_model'] %}
+{% if car.three_d_model %}
 <div class="car-3d-model">
     <h3>3D Model View</h3>
     <div class="sketchfab-embed-wrapper">
-        <iframe title="{{ car['name'] }}" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="{{ car['3d_model'] }}"></iframe>
+        <iframe title="{{ car.name }}" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="{{ car.three_d_model }}"></iframe>
     </div>
 </div>
 {% endif %}

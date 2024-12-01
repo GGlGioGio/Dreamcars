@@ -3,3 +3,4 @@ pytest
 flasgger
 flask_sqlalchemy
 flake8
+flask-swagger-ui
